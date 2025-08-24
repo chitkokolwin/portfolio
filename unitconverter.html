@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unit Converter</title>
+  <style>
+    body {
+      background-color: #e0f7fa;
+      font-family: sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .converter-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .convert-button {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .convert-button:hover {
+      background-color: #2980b9;
+    }
+
+    .back-button {
+      background-color: #7f8c8d;
+      color: white;
+    }
+
+    .back-button:hover {
+      background-color: #636e72;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="converter-box">
+    <h1>Unit Converter</h1>
+
+    <input type="number" id="inputValue" placeholder="Enter value" required min="0.0001" step="any">
+
+    <select id="fromUnit">
+      <option value="meter">Meter</option>
+      <option value="kilometer">Kilometer</option>
+      <option value="centimeter">Centimeter</option>
+      <option value="inch">Inch</option>
+      <option value="foot">Foot</option>
+    </select>
+
+    <select id="toUnit">
+      <option value="meter">Meter</option>
+      <option value="kilometer">Kilometer</option>
+      <option value="centimeter">Centimeter</option>
+      <option value="inch">Inch</option>
+      <option value="foot">Foot</option>
+    </select>
+
+    <button class="convert-button" onclick="convertUnit()">Convert</button>
+    <button class="back-button" onclick="goBack()">← Back</button>
+
+    <div id="result">Result: -</div>
+  </div>
+
+  <script>
+    const conversionRates = {
+      meter: 1,
+      kilometer: 0.001,
+      centimeter: 100,
+      inch: 39.3701,
+      foot: 3.28084
+    };
+
+    function convertUnit() {
+      const input = document.getElementById("inputValue");
+      const resultDiv = document.getElementById("result");
+
+      input.setCustomValidity("");
+
+      if (!input.checkValidity()) {
+        input.setCustomValidity("Please enter a valid number greater than 0.");
+        input.reportValidity();
+        resultDiv.innerText = "Invalid input.";
+        return;
+      }
+
+      const inputValue = parseFloat(input.value);
+      const fromUnit = document.getElementById("fromUnit").value;
+      const toUnit = document.getElementById("toUnit").value;
+
+      const valueInMeters = inputValue / conversionRates[fromUnit];
+      const convertedValue = valueInMeters * conversionRates[toUnit];
+
+      resultDiv.innerText = `Result: ${convertedValue.toFixed(4)} ${toUnit}`;
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
